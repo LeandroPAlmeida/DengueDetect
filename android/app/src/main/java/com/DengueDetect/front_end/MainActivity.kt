@@ -1,4 +1,4 @@
-package com.myapp
+package com.DengueDetect.front_end
 
 import android.os.Build
 import android.os.Bundle
