@@ -4,6 +4,7 @@ import Map from "../pages/Map/Map";
 import Diagnosis from "../pages/Diagnosis/Diagnosis";
 import Denunciation from "../pages/Denunciation/Denunciation";
 import CustomTabBar from "../CustomTabBar/CustomTabBar";
+import TestComponent from "../../TestComponent";
 
 const Tab = createBottomTabNavigator(); //Criando uma aba com opções clicáveis
 
@@ -18,7 +19,7 @@ export function TabBar() {
     >
       <Tab.Screen
         name="Informações"
-        component={Information}
+        component={TestComponent}
         options={{
           tabBarIcon: "information-circle",
         }}

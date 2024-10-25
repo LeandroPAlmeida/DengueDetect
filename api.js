@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Cria a instância do Axios
 const api = axios.create({
-  baseURL: "https://info.dengue.mat.br/api/", // Substitua pela URL base da sua API externa
+  baseURL: "https://info.dengue.mat.br/api", // Substitua pela URL base da sua API externa
   timeout: 10000, // Tempo máximo de espera em milissegundos
   headers: { Accept: "text/csv" }, // Solicita o CSV do servidor
 });

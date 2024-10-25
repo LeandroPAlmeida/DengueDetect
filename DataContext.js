@@ -1,5 +1,5 @@
-import React, { createContext, useState, useEffect } from "react";
-import api from "./api";
+import React, { createContext, useState } from "react";
+import api from "./api";  // Supondo que o `api` seja a instância do Axios ou a função de fetch
 
 export const DataContext = createContext();
 
@@ -8,37 +8,51 @@ export const DataProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const fetchData = async (params = {}) => {
+  const fetchData = async (processedData = []) => {
     setLoading(true);
+    setError(null); // Resetando o erro ao iniciar nova requisição
     try {
-      const response = await api.get("alertcity", { params });
-      const receivedData = response.data;
-      console.log("Requisiçao: ", receivedData)
-
-      // Verifique se receivedData é realmente um array antes de chamar .map
-      if (Array.isArray(receivedData)) {
-        const processedData = receivedData.map((item) => ({
-          geocode: item.geocode,
-          latitude: item.latitude || null,
-          longitude: item.longitude || null,
-          title: item.state || item.city || "Localização desconhecida",
-          description: item.disease || "Sem descrição",
-          ey_end: item.ey_end || null,
-        }));
-        console.log("ProcessedData: ", processedData)
-
-        setData(processedData);
+      console.log("Iniciando requisição com dados processados:", processedData);
+  
+      // Faz a requisição para a API
+      const response = await api.post("alertcity", processedData, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        responseType: 'blob',
+      });
+  
+      console.log("Response completo:", response);
+  
+      if (response && response.data) {
+        const contentType = response.headers['content-type'];
+        console.log("Content-Type:", contentType);
+  
+        const blob = response.data;
+        const responseText = await blob.text();
+        console.log("Texto da resposta:", responseText);
+  
+        if (contentType.includes('application/json')) {
+          const parsedData = JSON.parse(responseText);
+          setData(parsedData);
+        } else if (contentType.includes('text/csv')) {
+          const rows = responseText.split('\n').map(row => row.split(','));
+          setData(rows);
+        } else {
+          setError("Tipo de conteúdo desconhecido");
+        }
       } else {
-        console.error("Resposta inesperada da API:", receivedData);
-        setError("A resposta da API não contém os dados esperados.");
+        throw new Error("Resposta inválida da API");
       }
+  
     } catch (err) {
+      console.error("Erro ao buscar dados:", err);
       setError("Erro ao buscar dados.");
-      console.error(err);
     } finally {
       setLoading(false);
     }
   };
+  
 
   return (
     <DataContext.Provider value={{ data, loading, error, fetchData }}>
