@@ -1,10 +1,9 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { TabBar } from "./src/routes";
+import { TabBar } from "./src/routes/TabBar";
 import { StatusBar } from "expo-status-bar";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Login from "./src/pages/Login";
-import Informacoes from "./src/pages/Informacoes";
+import Login from "./src/pages/Login/Login";
 
 const Stack = createNativeStackNavigator(); //Criando uma aba com opções clicáveis
 
