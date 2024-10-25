@@ -15,7 +15,6 @@ Este trabalho tem como objetivo o desenvolvimento de um aplicativo voltado para 
 - [Uso](#uso)
 - [Funcionalidades](#funcionalidades)
 - [Tecnologias](#tecnologias)
-- [Contribuição](#contribuição)
 - [Licença](#licença)
 
 ## Instalação
