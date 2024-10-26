@@ -5,7 +5,7 @@ import Checkbox from "./Checkbox/Checkbox";
 
 function DengueChecker() {
 
-  function verificarDengue(doencas) {
+  function DengueDetect(doencas) {
     if (doencas.length >= 3) {
       Alert.alert(
         "Atenção",
@@ -22,11 +22,12 @@ function DengueChecker() {
   }
 
   const optionsQuest = [
-    { text: "Você apresenta manchas vermelhas pelo corpo", id: 1 },
-    { text: "Você sente dores intensas no corpo e nas articulações?", id: 2 },
-    { text: "Você tem dor atrás dos olhos?", id: 3 },
-    { text: "Você sente dor de cabeça?", id: 4 },
-    { text: "Você está com febre alta (acima de 38 graus) ?", id: 5 },
+    { text: "Manchas vermelhas na pele", id: 1 },
+    { text: "Náusea", id: 2 },
+    { text: "Vômitos", id: 3 },
+    { text: "Forte dor de cabeça", id: 4 },
+    { text: "Febre alta (40°C)", id: 5 },
+    { text: "Dor atrás dos olhos", id: 6 }
   ];
 
   return (
@@ -35,7 +36,7 @@ function DengueChecker() {
         <Checkbox options={optionsQuest} />
       </View>
 
-      <Button text="Verificar" onPress={verificarDengue} />
+      <Button text="Verificar" onPress={DengueDetect} />
     </View>
   );
 }

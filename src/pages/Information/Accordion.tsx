@@ -67,9 +67,7 @@ const AccordionItem: React.FC<AccordionProps> = ({ item, isOpen, onPress }) => {
   });
 
   const calculateLayout = (e: LayoutChangeEvent) => {
-    // layout is calculated here instead at parent for responsiveness on web
-    // but it returns 0 second time on iOS for some reason (not on web)
-    // Also spring effect cause onLayout to be called multiple time on iOS, so this condition avoids incorrect calculation
+  
     if (Platform.OS === 'web' || layoutHeight.current.container === 0) {
       layoutHeight.current.container = e.nativeEvent.layout.height + 32 + 2;
 

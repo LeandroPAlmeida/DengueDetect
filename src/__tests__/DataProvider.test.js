@@ -1,84 +1,122 @@
 import React from 'react';
 import { renderHook, act } from '@testing-library/react-hooks';
-import { DataProvider, DataContext } from './DataProvider';
-import api from './api';  // Certifique-se de importar o mock correto
+import { DataProvider, DataContext } from '../../DataContext';
+import api from '../../api';  // Certifique-se de importar o mock correto
 
 // Simula o módulo `api`
-jest.mock('./api');
+jest.mock('../../api');
 
 describe('DataProvider', () => {
   it('deve enviar processedData e receber um arquivo JSON', async () => {
     const processedData = [
       {
-        geocode: "3550308",
-        title: "São Paulo",
-        description: "dengue",
+        geocode: 3550308,
+        disease: "dengue",
+        format: 'json',
         ew_start: 1,
         ew_end: 50,
-        ey_start: 2024,
-        ey_end: 2024,
+        ey_start: 2017,
+        ey_end: 2017,
       }
     ];
+
+    // Simula a resposta da API com JSON real
+    const mockJSONResponse = {
+      data_iniSE: "number",
+      SE: "number",
+      casos_est: "number",
+      casos_est_min: "number",
+      casos_est_max: "number",
+      casos: "number",
+      p_rt1: "number",
+      p_inc100k: "number",
+      Localidade_id: "number",
+      nivel: "number",
+      id: "number",
+      versao_modelo: "data",
+      tweet: "null",
+      Rt: "number",
+      pop: "number",
+      tempmin: "null",
+      umidmax: "null",
+      receptivo: "number",
+      transmissao: "number",
+      nivel_inc: "number",
+      umidmed: "null",
+      umidmin: "null",
+      tempmed: "null",
+      tempmax: "null",
+      casprov: "number",
+      casprov_est: "null",
+      casprov_est_min: "null",
+      casprov_est_max: "null",
+      casconf: "null",
+      notif_accum_year: "number"
+    };
+
+    const wrapper = ({ children }) => <DataProvider>{children}</DataProvider>;
+    const { result, waitFor } = renderHook(() => React.useContext(DataContext), { wrapper });
 
     // Simula a resposta da API com status 200 OK e um JSON válido
     api.post.mockResolvedValue({
       status: 200,
       statusText: 'OK',
-      data: processedData,  // A resposta esperada da API
+      data: JSON.stringify(mockJSONResponse), // Converte o objeto para JSON string
+      headers: { 'content-type': 'application/json' }
     });
-
-    const wrapper = ({ children }) => <DataProvider>{children}</DataProvider>;
-    const { result, waitForNextUpdate } = renderHook(() => React.useContext(DataContext), { wrapper });
 
     // Executa o fetchData com os dados processados
     act(() => {
       result.current.fetchData(processedData);
     });
 
-    await waitForNextUpdate();
-
-    // Verifica se os dados foram definidos corretamente
-    expect(result.current.data).toEqual(processedData);  // Espera que os dados retornados sejam iguais aos enviados
-    expect(result.current.error).toBeNull();
-    expect(result.current.loading).toBe(false);
+    // Verifica se o estado foi atualizado
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false);
+      expect(result.current.data).toEqual(mockJSONResponse);
+      expect(result.current.error).toBeNull();
+    }, { timeout: 3000 });
   });
-
+  
   it('deve enviar processedData e receber um arquivo CSV', async () => {
     const processedData = [
       {
-        geocode: "3550308",
-        title: "São Paulo",
-        description: "dengue",
+        geocode: 3550308,
+        disease: "dengue",
+        format: 'csv',
         ew_start: 1,
         ew_end: 50,
-        ey_start: 2024,
-        ey_end: 2024,
+        ey_start: 2017,
+        ey_end: 2017,
       }
     ];
 
-    // Simula a resposta da API com status 200 OK e um CSV
-    const mockCsvResponse = `geocode,title,description,ew_start,ew_end,ey_start,ey_end
-3550308,São Paulo,dengue,1,50,2024,2024`;
+    // Simula a resposta da API com CSV estruturado
+    const mockCsvResponse = `data_iniSE,SE,casos_est,casos_est_min,casos_est_max\n1,10,5,3,7`;
 
     api.post.mockResolvedValue({
       status: 200,
       statusText: 'OK',
-      data: mockCsvResponse,  // A resposta é um CSV
+      data: mockCsvResponse, // A resposta é um CSV
+      headers: { 'content-type': 'text/csv' }
     });
 
     const wrapper = ({ children }) => <DataProvider>{children}</DataProvider>;
-    const { result, waitForNextUpdate } = renderHook(() => React.useContext(DataContext), { wrapper });
+    const { result, waitFor } = renderHook(() => React.useContext(DataContext), { wrapper });
 
     // Executa o fetchData com os dados processados
     act(() => {
       result.current.fetchData(processedData);
     });
 
-    await waitForNextUpdate();
-
-    // Verifica se os dados CSV foram processados corretamente (pode adaptar conforme a lógica de processamento de CSV)
-    expect(result.current.data).toEqual([]);
-    expect(result.current.error).toBeNull();
-    expect(result.current.loading).toBe(false);
+    // Aguarda a atualização dos dados para verificar se correspondem ao CSV mockado
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false);
+      expect(result.current.data).toEqual([
+        ["data_iniSE", "SE", "casos_est", "casos_est_min", "casos_est_max"],
+        ["1", "10", "5", "3", "7"]
+      ]);
+      expect(result.current.error).toBeNull();
+    }, { timeout: 3000 });
   });
 });

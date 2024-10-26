@@ -1,5 +1,5 @@
 import React, { createContext, useState } from "react";
-import api from "./api";  // Supondo que o `api` seja a instância do Axios ou a função de fetch
+import api from "./api";  
 
 export const DataContext = createContext();
 
@@ -19,24 +19,26 @@ export const DataProvider = ({ children }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        responseType: 'blob',
       });
   
       console.log("Response completo:", response);
+      console.log("Content-Type:", response.headers['content-type']);
+
+      let responseData;
   
-      if (response && response.data) {
+      // Verifica o tipo de conteúdo na resposta
+      if (response.headers && response.headers['content-type'] && response.headers['content-type']) {
         const contentType = response.headers['content-type'];
         console.log("Content-Type:", contentType);
-  
-        const blob = response.data;
-        const responseText = await blob.text();
-        console.log("Texto da resposta:", responseText);
-  
-        if (contentType.includes('application/json')) {
-          const parsedData = JSON.parse(responseText);
-          setData(parsedData);
-        } else if (contentType.includes('text/csv')) {
-          const rows = responseText.split('\n').map(row => row.split(','));
+        
+        // Verifica se é JSON
+        if(contentType.includes('application/json')) {
+          responseData = JSON.parse(response.data);         // Parse para JSON
+          setData(responseData); 
+          // Verifica se é CSV
+        } else if (response.headers && response.headers['content-type'] && response.headers['content-type'].includes('text/csv')) {
+          // Processa CSV para array de linhas e colunas
+          const rows = response.data.split('\n').map(row => row.split(','));
           setData(rows);
         } else {
           setError("Tipo de conteúdo desconhecido");
@@ -44,7 +46,6 @@ export const DataProvider = ({ children }) => {
       } else {
         throw new Error("Resposta inválida da API");
       }
-  
     } catch (err) {
       console.error("Erro ao buscar dados:", err);
       setError("Erro ao buscar dados.");

@@ -18,14 +18,17 @@ const TestComponent = () => {
     ];
     fetchData(processedData); // Faz a requisição quando o componente é montado
   }, [fetchData]);
+  console.log("processed -> ", fetchData);
 
   if (loading) return <div>Carregando...</div>;
   if (error) return <div>Erro: {error}</div>;
+  console.log("ddadta -> ", data);
 
   return (
     <div>
       <h1>Dados Recebidos:</h1>
       <pre>{JSON.stringify(data, null, 2)}</pre>
+      
     </div>
   );
 };
