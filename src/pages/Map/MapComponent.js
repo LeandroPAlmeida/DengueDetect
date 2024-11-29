@@ -3,7 +3,8 @@ import { Dimensions, StyleSheet, View, Alert } from "react-native";
 import MapView, { Circle, Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import AccordionSelect from "./AccordionSelect";
-import statesAndCities from "./StateAndCities"; // Certifique-se de usar o caminho correto
+import statesAndCities from "./StateAndCities"; 
+import TableInBottomRight from "./TableInBottomRight ";
 
 export default function Map() {
   const [myLocation, setMyLocation] = useState(null);
@@ -169,13 +170,22 @@ export default function Map() {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <View>
+        {/* Tabela de alerta */}
+        <TableInBottomRight
+        accessible={true}
+        accessibilityRole="table"
+        accessibilityLabel="Tabela de níveis de alerta com descrição de cores e níveis."
+        importantForAccessibility="yes"
+      />
       <MapView
         style={styles.map}
         region={mapRegion}
         ref={mapRef}
         provider="google"
+        accessible={false} // Ignora o mapa para acessibilidade
       >
+        
         {myLocation && (
           <>
             <Marker
@@ -204,14 +214,24 @@ export default function Map() {
             <AccordionSelect onGeocodeSelect={handleGeocodeSelect} />
         </View>
       </View>
+ 
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
-  map: { width: Dimensions.get("window").width, height: Dimensions.get("window").height },
-  titleButton: { position: "absolute", top: 50, flexDirection: "row", alignItems: "center", justifyContent: "center", paddingLeft: 50 },
+  map: { 
+    width: "100%", // Usa 100% da largura do container pai
+    height: "100%", // Usa 100% da altura do container pai
+    zIndex: 0, // Garante que o mapa fique atrás de outros componentes 
+  },
+  titleButton: { 
+    position: "absolute", 
+    top: 50, 
+    flexDirection: "row", 
+    alignItems: "center", 
+    justifyContent: "center", 
+    paddingLeft: 50 },
   linha: {
     padding: 5,
     flexDirection: "row",

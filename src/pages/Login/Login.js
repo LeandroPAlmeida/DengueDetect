@@ -7,7 +7,7 @@ import {
     TouchableOpacity
 } from "react-native";
 
-import * as Animatable from 'react-native-animatable'
+import * as Animatable from 'react-native-animatable';
 
 export default function Login() {
     const navigation = useNavigation();
@@ -15,23 +15,39 @@ export default function Login() {
     return(
         <View style={styles.container}>
 
-            <View style={styles.containerLogo}>
+            {/* Acessibilidade: Bem-vindo ao Dengue Detect (oculto na interface) */}
+
+            <View 
+                style={styles.containerLogo}
+                accessibilityRole="image"
+                accessibilityLabel="Bem-vindo ao Dengue Detect"
+            >
                 <Animatable.Image
-                 animation="flipInY"
-                 source={require("../../assets/logo.png")}
-                 style={{ width: '100%' }}
-                 resizeMode="contain"
+                    animation="flipInY"
+                    source={require("../../assets/logo.png")}
+                    style={{ width: '100%' }}
+                    resizeMode="contain"
+                    accessibilityLabel="Imagem do logotipo em vermelho"
                 />
             </View>
 
-            <Animatable.View delay={700} animation="fadeInUp" style={styles.containerForm}>
+            <Animatable.View 
+                delay={700} 
+                animation="fadeInUp" 
+                style={styles.containerForm}
+                accessibilityLabel="Seção de formulário"
+                accessibilityHint="Contém informações e botão para acessar o conteúdo"
+            >
                 <Text style={styles.title}>Saiba mais sobre a dengue e suas variantes</Text>
 
                 <Text>Entre para começar</Text>
 
                 <TouchableOpacity 
-                style={styles.button}
-                onPress={ () => navigation.navigate('TabBar')}
+                    style={styles.button}
+                    onPress={ () => navigation.navigate('TabBar')}
+                    accessibilityRole="button"
+                    accessibilityLabel="Botão de acesso"
+                    accessibilityHint="Toque para entrar e navegar pelo aplicativo"
                 >
                     <Text style={styles.buttonText}>Acessar</Text>
                 </TouchableOpacity>
@@ -86,4 +102,4 @@ const styles = StyleSheet.create({
         color: '#FFF',
         fontWeight: 'bold'
     }
-})
+});

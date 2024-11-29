@@ -94,6 +94,9 @@ const AccordionItem: React.FC<AccordionProps> = ({ item, isOpen, onPress }) => {
       <Pressable
         style={{ flexDirection: "row", alignItems: "center" }}
         onPress={onPress}
+        accessibilityRole="button"
+        accessibilityLabel={`Título: ${item.title}`}
+        accessibilityState={{ expanded: isOpen }}
       >
         <Text style={{ flex: 1, fontSize: 19, fontWeight: "600" }}>
           {item.title}
