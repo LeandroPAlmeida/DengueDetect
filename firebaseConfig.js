@@ -1,21 +1,21 @@
-
 import { initializeApp } from "firebase/app";
 import * as Notifications from 'expo-notifications';
+import { API_KEY, AUTH_DOMAIN, PROJECT_ID, STORAGE_BUCKET, MESSAGING_SENDER_ID, APP_ID } from '@env';
 
-// Configuração do Firebase
+
 const firebaseConfig = {
-    apiKey: "AIzaSyDavzXW6IDaIqPmJp-DzkPDAvWZPNcr6qY",
-    authDomain: "denguedetect-7ba79.firebaseapp.com",
-    projectId: "denguedetect-7ba79",
-    storageBucket: "denguedetect-7ba79.appspot.com",
-    messagingSenderId: "419227999532",
-    appId: "1:419227999532:android:56d99980a62bf628c0a089",
+    apiKey: API_KEY,
+    authDomain: AUTH_DOMAIN,
+    projectId: PROJECT_ID,
+    storageBucket: STORAGE_BUCKET,
+    messagingSenderId: MESSAGING_SENDER_ID,
+    appId: APP_ID,
 };
 
-// Inicializa o Firebase
+// Inicializando o Firebase
 const app = initializeApp(firebaseConfig);
 
-// Solicita permissões para notificações
+// Função para solicitar permissão para notificações
 async function requestNotificationPermission() {
     const { status } = await Notifications.requestPermissionsAsync();
     if (status !== 'granted') {
