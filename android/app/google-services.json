@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "419227999532",
+    "project_id": "denguedetect-7ba79",
+    "storage_bucket": "denguedetect-7ba79.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:419227999532:android:56d99980a62bf628c0a089",
+        "android_client_info": {
+          "package_name": "com.DengueDetect.front_end"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQeKTkF3aXMMY7l1kxgcYQfkP_dBqM200"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

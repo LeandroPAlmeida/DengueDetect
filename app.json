@@ -1,0 +1,37 @@
+{
+  "expo": {
+    "name": "my-app",
+    "slug": "my-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./src/assets/logo.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./src/assets/logo.png",
+      "resizeMode": "contain",
+      "justifyContent": "center",
+      "alignItems": "center",
+      "flex": 1,
+      "backgroundColor": "#ff0000"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "package": "com.DengueDetect.front_end",
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "foregroundImage": "./src/assets/logo.png",
+        "resizeMode": "contain"
+      }
+    },
+    "web": {
+      "favicon": "./src/assets/logo.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "ed194bee-13ad-4425-a793-309cef1f272e"
+      }
+    }
+  }
+}
